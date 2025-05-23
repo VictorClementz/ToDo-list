@@ -9,7 +9,9 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ToDoUI implements ActionListener{
-    private TaskManager taskManager = new TaskManager();
+    private TaskManager taskManager;
+
+
     JFrame frame;
     JButton addButton, removeButton;
     Font myFont = new Font("Inc Free", Font.BOLD,30);
@@ -18,7 +20,10 @@ public class ToDoUI implements ActionListener{
 
     JTextField nameField, descField, priorityField;
     JTextArea textArea;
-    public ToDoUI(){
+
+
+    public ToDoUI(TaskManager taskManager){
+
 
         frame = new JFrame("ToDo-List");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,15 +69,21 @@ public class ToDoUI implements ActionListener{
         priorityField.setBounds(400, 150, 50, 25);
         frame.add(priorityField);
 
+        this.taskManager = taskManager;
+        loadTasksFromLogic(this.taskManager.tasksCollection);
+
         frame.setVisible(true);
 
         frame.setVisible(true);
+
+
+
     }
+
+
 
     public void loadTasksFromLogic(ArrayList<Task> taskCollections) {
         listModel.clear();
-
-
         ArrayList<Task> test = taskCollections;
         for (Task task : test) {
             listModel.addElement(task.getName());

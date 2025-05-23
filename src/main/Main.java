@@ -1,43 +1,28 @@
 package main;
+import Logic.Persistancy;
+import Logic.Task;
 import UI.ToDoUI;
 import Logic.TaskManager;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
     private Scanner scanner = new Scanner(System.in);
-    private TaskManager taskManager = new TaskManager();
-    private ToDoUI toDoUI = new ToDoUI();
+    private Persistancy persistancy = new Persistancy();
+    private TaskManager taskManager;
+    private ToDoUI toDoUI;
 
     public static void main(String[] args) {
-
         Main mainApp = new Main();
-        //mainApp.startMenu();
+        mainApp.start();
     }
-/////terminal old
-//    public void startMenu(){
-//        String menuChoice;
-//        System.out.println("Enter 1 for adding tasks");
-//        System.out.println("Enter 2 for viewing task list");
-//        System.out.println("Enter 3 for removing tasks");
-//        menuChoice = scanner.nextLine();
-//
-//        switch (menuChoice){
-//            case "1":
-//                taskManager.add(scanner);
-//                break;
-//            case "2":
-//                taskManager.printTasks();
-//                break;
-//            case "3":
-//                toDoUI.loadTasksFromLogic(taskManager.tasksCollection);
-//                taskManager.removeSelect(scanner);
-//                break;
-//            default:
-//                System.out.println("Incorrect input try again");
-//                break;
-//
-//        }
-//        startMenu();
-//    }
+
+    public void start() {
+        ArrayList<Task> importedTasks = persistancy.importTasksFromJson();
+        taskManager = new TaskManager(importedTasks);
+        toDoUI = new ToDoUI(taskManager);
+
+    }
 }
