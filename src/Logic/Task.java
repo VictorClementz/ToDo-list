@@ -24,6 +24,9 @@ public class Task {
     public int getPriority() {
         return priority;
     }
+    public int setPriority(int num){
+       return priority = num;
+    }
 
     public String getDesc(){
         return desc;

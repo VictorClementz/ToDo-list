@@ -11,15 +11,13 @@ import java.util.ArrayList;
 public class ToDoUI implements ActionListener{
     private TaskManager taskManager = new TaskManager();
     JFrame frame;
-    JButton addButton;
+    JButton addButton, removeButton;
     Font myFont = new Font("Inc Free", Font.BOLD,30);
     DefaultListModel<String> listModel;
     JList<String> taskList;
 
-    JTextField nameField;
-    JTextField descField;
-    JTextField priorityField;
-
+    JTextField nameField, descField, priorityField;
+    JTextArea textArea;
     public ToDoUI(){
 
         frame = new JFrame("ToDo-List");
@@ -34,6 +32,14 @@ public class ToDoUI implements ActionListener{
         addButton.setFocusable(false);
         frame.add(addButton);
 
+        removeButton = new JButton("Remove task");
+        removeButton.setBounds(300, 430, 200, 50);
+        removeButton.addActionListener(this);
+        removeButton.setFont(myFont);
+        removeButton.setBackground(Color.red);
+        removeButton.setFocusable(false);
+        frame.add(removeButton);
+
         listModel = new DefaultListModel<>();
         taskList = new JList<>(listModel);
         taskList.setBounds(50, 50, 300, 350);
@@ -42,6 +48,13 @@ public class ToDoUI implements ActionListener{
         nameField = new JTextField();
         nameField.setBounds(400, 50, 300, 25);
         frame.add(nameField);
+        textArea = new JTextArea();
+        textArea.setBounds(400,25,300, 25);
+        textArea.setText("Enter new task name:");
+        textArea.setEditable(false);
+        textArea.setBackground(Color.lightGray);
+        frame.add(textArea);
+
 
         descField = new JTextField();
         descField.setBounds(400, 100, 300, 25);
@@ -94,8 +107,23 @@ public class ToDoUI implements ActionListener{
             priorityField.setText("");
         }
 
+        if (e.getSource() == removeButton) {
+            String name = nameField.getText();
 
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Name field is required.");
+                return;
+            }
+
+            taskManager.removeTask(name);
+            loadTasksFromLogic(taskManager.tasksCollection);
+            nameField.setText("");
+            descField.setText("");
+            priorityField.setText("");
+        }
     }
+
+
     private boolean isNumeric(String s) {
         try {
             Integer.parseInt(s);

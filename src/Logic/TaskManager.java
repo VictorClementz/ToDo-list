@@ -20,8 +20,24 @@ public class TaskManager {
     public void add(String name, String desc, int prio){
 
         Task newTask = new Task(name, desc, prio);
+        priorityProbing(newTask.getPriority());
         tasksCollection.add(newTask);
         sort();
+        for (Task task : tasksCollection){
+            System.out.println(task);
+        }
+
+    }
+
+    private void priorityProbing(int priority){
+        for (Task task : tasksCollection){
+            System.out.println("1");
+            if (task.getPriority() == priority){
+                priorityProbing(priority + 1);
+                task.setPriority(priority + 1);
+                break;
+            }
+        }
     }
 
     public void printTasks(){
@@ -32,17 +48,7 @@ public class TaskManager {
         }
     }
 
-    public boolean isNumeric(String str) {
-        if (str == null || str.isEmpty()) {
-            return false;
-        }
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+
 
     private void sort(){
         tasksCollection.sort((t1, t2) -> Integer.compare(t1.getPriority(), t2.getPriority()));
@@ -59,7 +65,7 @@ public class TaskManager {
         removeTask(removedTask);
     }
 
-    private void removeTask(String removedTask){
+    public void removeTask(String removedTask){
         for(Task task : tasksCollection){
             if (task.getName().equals(removedTask)){
                 tasksCollection.remove(task);
